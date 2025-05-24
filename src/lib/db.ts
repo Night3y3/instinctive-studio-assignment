@@ -1,27 +1,34 @@
-import mongoose from 'mongoose';
+import { MongoClient, type Db } from "mongodb"
 
-type ConnectionObject = {
-    isConnected?: number;
-};
-
-const connection: ConnectionObject = {};
-
-async function dbConnect(): Promise<void> {
-    if (connection.isConnected) {
-        console.log('Already connected to the database');
-        return;
-    }
-
-    try {
-        const db = await mongoose.connect(process.env.MONGODB_URI || '', {});
-
-        connection.isConnected = db.connections[0].readyState;
-
-        console.log('Database connected successfully');
-    } catch (error) {
-        console.error('Database connection failed:', error);
-        process.exit(1);
-    }
+if (!process.env.MONGODB_URI) {
+    throw new Error("Error getting MongoDB URI. Please define it in your environment variables.")
 }
 
-export default dbConnect;
+const uri = process.env.MONGODB_URI
+const options = {}
+
+let client: MongoClient
+let clientPromise: Promise<MongoClient>
+
+if (process.env.NODE_ENV === "development") {
+    const globalWithMongo = global as typeof globalThis & {
+        _mongoClientPromise?: Promise<MongoClient>
+    }
+
+    if (!globalWithMongo._mongoClientPromise) {
+        client = new MongoClient(uri, options)
+        globalWithMongo._mongoClientPromise = client.connect()
+    }
+    clientPromise = globalWithMongo._mongoClientPromise
+} else {
+    client = new MongoClient(uri, options)
+    clientPromise = client.connect()
+}
+
+export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db }> {
+    const client = await clientPromise
+    const db = client.db("b2b_marketplace")
+    return { client, db }
+}
+
+export default clientPromise
