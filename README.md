@@ -35,7 +35,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-### Quick Start
+## Quick Start
 
 1. **Clone and install**:
    \`\`\`bash
@@ -68,7 +68,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 5. **Open browser**: [http://localhost:3000](http://localhost:3000)
 
-### Prerequisites
+## Prerequisites
 
 - Node.js 18+
 - MongoDB (local or Atlas)
