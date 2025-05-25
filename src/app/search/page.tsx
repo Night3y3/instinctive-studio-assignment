@@ -141,23 +141,19 @@ export default function SearchPage() {
         setFilters(newFilters)
         setCurrentPage(1)
 
-        if (hasSearched) {
-            setTimeout(() => {
-                performSearch(1)
-                updateURL(1)
-            }, 100)
-        }
+        setTimeout(() => {
+            performSearch(1)
+            updateURL(1)
+        }, 100)
     }
 
     const clearFilters = () => {
         setFilters({})
         setCurrentPage(1)
-        if (hasSearched) {
-            setTimeout(() => {
-                performSearch(1)
-                updateURL(1)
-            }, 100)
-        }
+        setTimeout(() => {
+            performSearch(1)
+            updateURL(1)
+        }, 100)
     }
 
     const handleCategoryChange = (newCategory: string) => {
@@ -165,21 +161,29 @@ export default function SearchPage() {
         setFilters({})
         setCurrentPage(1)
 
-        if (hasSearched) {
-            setTimeout(() => {
-                performSearch(1)
-                updateURL(1)
-            }, 100)
-        }
+        setTimeout(() => {
+            performSearch(1)
+            updateURL(1)
+        }, 100)
     }
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page)
         performSearch(page)
         updateURL(page)
-        // Scroll to top of results
         window.scrollTo({ top: 0, behavior: "smooth" })
     }
+
+    useEffect(() => {
+        const urlQuery = searchParams.get("q")
+        const urlCategory = searchParams.get("category")
+        const urlFilters = searchParams.get("filters")
+
+        if (urlQuery || urlCategory || urlFilters) {
+            setHasSearched(true)
+            performSearch(currentPage)
+        }
+    }, [searchParams])
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -239,7 +243,6 @@ export default function SearchPage() {
                 )}
 
                 <div className="grid lg:grid-cols-4 gap-6">
-                    {/* Filters Sidebar */}
                     <div className="lg:col-span-1">
                         <SearchFilters
                             facets={searchResults?.facets || {}}
@@ -247,7 +250,6 @@ export default function SearchPage() {
                             onFilterChange={handleFilterChange}
                             onClearFilters={clearFilters}
                             loading={loading}
-                            hasSearched={hasSearched}
                         />
                     </div>
 

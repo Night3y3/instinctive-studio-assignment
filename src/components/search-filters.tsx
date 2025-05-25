@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
-import { Filter, X, Search } from "lucide-react"
+import { Filter, X } from "lucide-react"
 
 interface SearchFiltersProps {
     facets: Record<string, any[]>
@@ -14,7 +14,6 @@ interface SearchFiltersProps {
     onFilterChange: (key: string, values: string[]) => void
     onClearFilters: () => void
     loading: boolean
-    hasSearched: boolean
 }
 
 export function SearchFilters({
@@ -23,7 +22,6 @@ export function SearchFilters({
     onFilterChange,
     onClearFilters,
     loading,
-    hasSearched,
 }: SearchFiltersProps) {
     const handleCheckboxChange = (facetKey: string, value: string, checked: boolean) => {
         const currentValues = filters[facetKey] || []
@@ -81,14 +79,9 @@ export function SearchFilters({
                 </div>
             </CardHeader>
             <CardContent className="space-y-6">
-                {!hasSearched ? (
-                    <div className="text-center py-8">
-                        <Search className="h-8 w-8 text-slate-400 mx-auto mb-3" />
-                        <p className="text-sm text-slate-500">Perform a search to see available filters</p>
-                    </div>
-                ) : !hasFacets ? (
+                {!hasFacets ? (
                     <div className="text-center py-4">
-                        <p className="text-sm text-slate-500">No filters available for current search</p>
+                        <p className="text-sm text-slate-500">No filters available. Try searching to see filter options.</p>
                     </div>
                 ) : (
                     Object.entries(facets).map(([facetKey, facetValues]) => (
