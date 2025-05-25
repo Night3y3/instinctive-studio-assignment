@@ -118,3 +118,9 @@ categoryId: string,
 attributes: Record<string, any>
 }
 \`\`\`
+
+## Demo
+
+https://github.com/user-attachments/assets/69c0fada-87d6-4dd5-b61f-315b16d36272
+
+
