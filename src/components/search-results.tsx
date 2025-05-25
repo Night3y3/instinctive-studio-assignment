@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { MapPin, DollarSign, Package } from "lucide-react"
+import { MapPin, DollarSign, Package, Search } from "lucide-react"
 
 interface SearchResultsProps {
     results: any[]
@@ -14,9 +14,20 @@ interface SearchResultsProps {
         total: number
         totalPages: number
     }
+    searchResults?: {
+        searchMethod?: string
+        processingTime?: number
+    }
+    hasSearched?: boolean
 }
 
-export function SearchResults({ results, loading, pagination }: SearchResultsProps) {
+export function SearchResults({
+    results,
+    loading,
+    pagination,
+    searchResults,
+    hasSearched = false,
+}: SearchResultsProps) {
     if (loading) {
         return (
             <div className="space-y-4">
@@ -45,6 +56,18 @@ export function SearchResults({ results, loading, pagination }: SearchResultsPro
         )
     }
 
+    if (!hasSearched) {
+        return (
+            <Card>
+                <CardContent className="p-12 text-center">
+                    <Search className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-slate-900 mb-2">Ready to search</h3>
+                    <p className="text-slate-600">Enter your search terms and click the search button to find products.</p>
+                </CardContent>
+            </Card>
+        )
+    }
+
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -57,6 +80,15 @@ export function SearchResults({ results, loading, pagination }: SearchResultsPro
                     </p>
                 )}
             </div>
+
+            {searchResults?.searchMethod && (
+                <div className="text-sm text-slate-500 mb-4 flex items-center gap-2">
+                    <span>
+                        Search method: <span className="font-medium capitalize">{searchResults.searchMethod}</span>
+                    </span>
+                    {searchResults.processingTime && <span className="text-slate-400">• {searchResults.processingTime}ms</span>}
+                </div>
+            )}
 
             {results.length === 0 ? (
                 <Card>
@@ -79,13 +111,16 @@ export function SearchResults({ results, loading, pagination }: SearchResultsPro
                                             <h3 className="text-lg font-semibold text-slate-900 mb-1">{item.title}</h3>
                                             <p className="text-slate-600 text-sm line-clamp-2">{item.description}</p>
                                         </div>
-                                        {item.price > 0 && (
-                                            <div className="flex items-center text-green-600 font-semibold ml-4">
-                                                <DollarSign className="h-4 w-4 mr-1" />
-                                                {item.price.toLocaleString()}
-                                            </div>
-                                        )}
+                                        <div className="flex items-center gap-3 ml-4">
+                                            {item.price > 0 && (
+                                                <div className="flex items-center text-green-600 font-semibold">
+                                                    Rs.
+                                                    {item.price.toLocaleString()}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
+
                                     <div className="flex items-center gap-4 text-sm text-slate-500">
                                         {item.location && (
                                             <div className="flex items-center gap-1">
@@ -99,6 +134,8 @@ export function SearchResults({ results, loading, pagination }: SearchResultsPro
                                             </Badge>
                                         )}
                                     </div>
+
+                                    {/* Attributes */}
                                     {item.attributes && Object.keys(item.attributes).length > 0 && (
                                         <div className="flex flex-wrap gap-1">
                                             {Object.entries(item.attributes)
