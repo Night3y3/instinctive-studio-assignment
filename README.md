@@ -67,3 +67,54 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
    \`\`\`
 
 5. **Open browser**: [http://localhost:3000](http://localhost:3000)
+
+### Prerequisites
+
+- Node.js 18+
+- MongoDB (local or Atlas)
+- Bun
+
+## 🔧 API Endpoints
+
+### GET /api/search
+
+Advanced search with semantic capabilities.
+
+**Parameters:**
+
+- \`q\` (string): Search query
+- \`category\` (string): Category filter
+- \`filters\` (JSON): Attribute filters
+- \`method\` (string): "semantic" | "hybrid" | "text"
+- \`page\`, \`limit\`: Pagination
+
+**Response:**
+\`\`\`typescript
+{
+results: Listing[],
+facets: SearchFacets,
+pagination: Pagination,
+searchMethod: string,
+processingTime: number
+}
+\`\`\`
+
+### GET /api/categories
+
+Get all categories with their attribute schemas.
+
+### POST /api/add
+
+Create a new listing.
+
+**Body:**
+\`\`\`typescript
+{
+title: string,
+description: string,
+price: number,
+location: string,
+categoryId: string,
+attributes: Record<string, any>
+}
+\`\`\`
