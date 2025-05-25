@@ -34,3 +34,36 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+### Quick Start
+
+1. **Clone and install**:
+   \`\`\`bash
+   git clone [<repository-url>](https://github.com/Night3y3/instinctive-studio-assignment.git)
+   cd instinctive-studio-assignment
+   bun install
+   \`\`\`
+
+2. **Start MongoDB**:
+   \`\`\`bash
+
+   # Local MongoDB
+
+   mongod
+
+   # Or with Docker
+
+   docker run -d -p 27017:27017 --name mongodb mongo:latest
+   \`\`\`
+
+3. **Seed database with embeddings**:
+   \`\`\`bash
+   bun run seed
+   \`\`\`
+
+4. **Start development server**:
+   \`\`\`bash
+   bun run dev
+   \`\`\`
+
+5. **Open browser**: [http://localhost:3000](http://localhost:3000)
