@@ -180,7 +180,7 @@ export class SearchEngine {
 
             return results.map((listing) => ({
                 listing: listing as Listing,
-                similarity: listing.score ? Math.min(1.0, listing.score / 10) : 0.5, // Normalize text score
+                similarity: listing.score ? Math.min(1.0, listing.score / 10) : 0.5,
             }))
         } catch (error) {
             console.error("Text search error:", error)
